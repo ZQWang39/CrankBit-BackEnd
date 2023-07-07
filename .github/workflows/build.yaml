@@ -129,12 +129,12 @@ jobs:
  
     - name: Update ECS service
       env: 
-        CLUSTER_NAME_PROD : Crankbit-cluster-${{ github.ref_name }}
-        SERVICE_NAME_PROD : crankbit_service_${{ github.ref_name }}
-        TASK_DEFINITION_PROD : crankbit_backend_task_${{ github.ref_name }}
+        CLUSTER_NAME : Crankbit-cluster-${{ github.ref_name }}
+        SERVICE_NAME : crankbit_service_${{ github.ref_name }}
+        TASK_DEFINITION : crankbit_backend_task_${{ github.ref_name }}
       run: |
         aws ecs update-service \
-        --cluster $CLUSTER_NAME_PROD \
-        --service $SERVICE_NAME_PROD \
-        --task-definition $TASK_DEFINITION_PROD \
+        --cluster $CLUSTER_NAME \
+        --service $SERVICE_NAME \
+        --task-definition $TASK_DEFINITION \
         --force-new-deployment
