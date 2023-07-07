@@ -23,7 +23,7 @@ ENV JWT_LIFETIME=${JWT_LIFETIME}
 # Build the app
 RUN npm run build 
 
-# Backed server is running at 9090
+# Backed server is running at 8080
 EXPOSE 8080
 
 # Start the app

@@ -90,7 +90,7 @@ jobs:
         continue-on-error: false
 
   build:
-    if: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/uat' || github.ref == 'refs/heads/prod'}}
+    if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/uat' || github.ref == 'refs/heads/prod')}}
     needs: test
     runs-on: ubuntu-22.04
     steps:
@@ -126,16 +126,15 @@ jobs:
         aws ecr get-login-password --region ${{ secrets.AWS_REGION}} | docker login --username AWS --password-stdin ${{ secrets.ECS_REGISTRY_ZIQI }}
         docker push ${{ secrets.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:latest
         docker push ${{ secrets.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:${{ github.sha }}
-
  
-    # - name: Update ECS service
-    #   env: 
-    #     CLUSTER_NAME_PROD : ${{ secrets.CLUSTER_NAME_PROD }}
-    #     SERVICE_NAME_PROD : ${{ secrets.SERVICE_NAME_PROD }}
-    #     TASK_DEFINITION_PROD : ${{ secrets.TASK_DEFINITION_PROD }}
-    #   run: |
-    #     aws ecs update-service \
-    #     --cluster $CLUSTER_NAME_PROD \
-    #     --service $SERVICE_NAME_PROD \
-    #     --task-definition $TASK_DEFINITION_PROD \
-    #     --force-new-deployment
+    - name: Update ECS service
+      env: 
+        CLUSTER_NAME_PROD : Crankbit-cluster-${{ github.ref_name }}
+        SERVICE_NAME_PROD : crankbit_service_${{ github.ref_name }}
+        TASK_DEFINITION_PROD : crankbit_backend_task_${{ github.ref_name }}
+      run: |
+        aws ecs update-service \
+        --cluster $CLUSTER_NAME_PROD \
+        --service $SERVICE_NAME_PROD \
+        --task-definition $TASK_DEFINITION_PROD \
+        --force-new-deployment
