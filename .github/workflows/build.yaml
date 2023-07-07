@@ -90,7 +90,7 @@ jobs:
         continue-on-error: false
 
   build:
-    if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/uat' || github.ref == 'refs/heads/prod')}}
+    if: ${{ (github.event.inputs.environment == 'dev' || github.event.inputs.environment == 'uat' || github.event.inputs.environment == 'prod' || github.event_name == 'push') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/uat' || github.ref == 'refs/heads/prod')}}
     needs: test
     runs-on: ubuntu-22.04
     steps:
