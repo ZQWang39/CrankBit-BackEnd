@@ -118,14 +118,14 @@ jobs:
         --build-arg MONGO_URI="$MONGO_URI" \
         --build-arg JWT_SECRET="$JWT_SECRET" \
         --build-arg JWT_LIFETIME="$JWT_LIFETIME" \
-        -t ${{ secrets.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:latest \
-        -t ${{ secrets.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:${{ github.sha }} .
+        -t ${{ vars.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:latest \
+        -t ${{ vars.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:${{ github.sha }} .
     
     - name: Push docker image to AWS ECR
       run: |
-        aws ecr get-login-password --region ${{ secrets.AWS_REGION}} | docker login --username AWS --password-stdin ${{ secrets.ECS_REGISTRY_ZIQI }}
-        docker push ${{ secrets.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:latest
-        docker push ${{ secrets.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:${{ github.sha }}
+        aws ecr get-login-password --region ${{ secrets.AWS_REGION}} | docker login --username AWS --password-stdin ${{ vars.ECS_REGISTRY_ZIQI }}
+        docker push ${{ vars.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:latest
+        docker push ${{ vars.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:${{ github.sha }}
  
     - name: Update ECS service
       env: 
