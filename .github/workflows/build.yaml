@@ -112,7 +112,7 @@ jobs:
       uses: docker/setup-buildx-action@v2
     
     
-    - name: Build docker image for development environment
+    - name: Build docker image
       env: 
         MONGO_URI: ${{ secrets.MONGO_URI }}
         JWT_SECRET: ${{ secrets.JWT_SECRET }}
