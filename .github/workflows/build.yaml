@@ -96,7 +96,7 @@ jobs:
     runs-on: ubuntu-22.04
     environment:
       name: ${{ github.ref_name }}
-      url: ${{ vars.BACKEND_URL }}
+      url: ${{ vars.BACKEND_HEALTH_CHECK }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
