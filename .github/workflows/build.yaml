@@ -28,7 +28,8 @@ on:
           - dev
           - uat
           - prod
-
+env:
+  CI: false
 concurrency:
   group: ${{ github.ref || github.run_id }}
   cancel-in-progress: true
@@ -93,6 +94,9 @@ jobs:
     if: ${{ (github.event.inputs.environment == 'dev' || github.event.inputs.environment == 'uat' || github.event.inputs.environment == 'prod' || github.event_name == 'push') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/uat' || github.ref == 'refs/heads/prod')}}
     needs: test
     runs-on: ubuntu-22.04
+    environment:
+      name: ${{ github.ref_name }}
+      url: ${{ vars.BACKEND_HEALTH_CHECK }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -108,7 +112,7 @@ jobs:
       uses: docker/setup-buildx-action@v2
     
     
-    - name: Build docker image for development environment
+    - name: Build docker image
       env: 
         MONGO_URI: ${{ secrets.MONGO_URI }}
         JWT_SECRET: ${{ secrets.JWT_SECRET }}
@@ -118,14 +122,14 @@ jobs:
         --build-arg MONGO_URI="$MONGO_URI" \
         --build-arg JWT_SECRET="$JWT_SECRET" \
         --build-arg JWT_LIFETIME="$JWT_LIFETIME" \
-        -t ${{ secrets.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:latest \
-        -t ${{ secrets.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:${{ github.sha }} .
+        -t ${{ vars.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:latest \
+        -t ${{ vars.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:${{ github.sha }} .
     
     - name: Push docker image to AWS ECR
       run: |
-        aws ecr get-login-password --region ${{ secrets.AWS_REGION}} | docker login --username AWS --password-stdin ${{ secrets.ECS_REGISTRY_ZIQI }}
-        docker push ${{ secrets.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:latest
-        docker push ${{ secrets.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:${{ github.sha }}
+        aws ecr get-login-password --region ${{ secrets.AWS_REGION}} | docker login --username AWS --password-stdin ${{ vars.ECS_REGISTRY_ZIQI }}
+        docker push ${{ vars.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:latest
+        docker push ${{ vars.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:${{ github.sha }}
  
     - name: Update ECS service
       env: 
