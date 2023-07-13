@@ -137,8 +137,7 @@ jobs:
         --build-arg EMAIL_SERVER_HOST="$EMAIL_SERVER_HOST" \
         --build-arg EMAIL_FROM="$EMAIL_FROM" \
         --build-arg EMAIL_SERVER_USER="$EMAIL_SERVER_USER" \
-        --build-arg SENDGRID_API_KEY="$SENDGRID_API_KEY"
-
+        --build-arg SENDGRID_API_KEY="$SENDGRID_API_KEY" \
         -t ${{ vars.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:latest \
         -t ${{ vars.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:${{ github.sha }} .
     
