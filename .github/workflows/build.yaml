@@ -146,7 +146,13 @@ jobs:
         aws ecr get-login-password --region ${{ secrets.AWS_REGION}} | docker login --username AWS --password-stdin ${{ vars.ECS_REGISTRY_ZIQI }}
         docker push ${{ vars.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:latest
         docker push ${{ vars.ECS_REGISTRY_ZIQI }}/crankbit-backend-${{ github.ref_name }}:${{ github.sha }}
- 
+    
+    - name: Create a new task definition
+      env: 
+        task_definition_file : task_definition_${{ github.ref_name }}.json
+      run: |
+        aws ecs register-task-definition --cli-input-json file://$task_definition_file
+   
     - name: Update ECS service
       env: 
         CLUSTER_NAME : Crankbit-cluster-${{ github.ref_name }}
