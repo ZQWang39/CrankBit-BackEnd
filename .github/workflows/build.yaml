@@ -151,7 +151,7 @@ jobs:
       env: 
         task_definition_file : task_definition_${{ github.ref_name }}.json
       run: |
-        aws ecs register-task-definition --cli-input-json file://$task_definition_file
+        aws ecs register-task-definition --cli-input-json file://.github/workflows/$task_definition_file
    
     - name: Update ECS service
       env: 
