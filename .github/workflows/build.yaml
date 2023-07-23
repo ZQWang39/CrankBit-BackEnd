@@ -152,7 +152,7 @@ jobs:
         task_definition_file : task_definition_${{ github.ref_name }}.json
         GITHUB_SHA: ${{ github.sha }}
       run: |
-        chmod +x update_task_definition.sh
+        chmod +x .github/workflows/update_task_definition.sh
         ./update_task_definition.sh
         aws ecs register-task-definition --cli-input-json file://.github/workflows/$task_definition_file
    
