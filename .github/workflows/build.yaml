@@ -149,13 +149,12 @@ jobs:
     
     - name: Create a new task definition
       env: 
-        task_definition_file : task_definition_${{ github.ref_name }}.json
         GITHUB_SHA: ${{ github.sha }}
         TARGET_ENV: ${{ github.ref_name }}
       run: |
         chmod +x .github/workflows/update_task_definition.sh
         ./.github/workflows/update_task_definition.sh
-        aws ecs register-task-definition --cli-input-json file://.github/workflows/$task_definition_file
+        aws ecs register-task-definition --cli-input-json file://.github/workflows/task_definition.json
    
     - name: Update ECS service
       env: 
