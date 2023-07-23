@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Extract the GitHub SHA and environment from the environment variable
-GITHUB_SHA=${GITHUB_SHA:0:7}  
+GITHUB_SHA=${GITHUB_SHA}  
 ENVIRONMENT=${TARGET_ENV}
 
 # Update image version in the task-definition.json file
