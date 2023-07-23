@@ -154,6 +154,7 @@ jobs:
       run: |
         chmod +x .github/workflows/update_task_definition.sh
         ./.github/workflows/update_task_definition.sh
+        cat .github/workflows/task_definition.json
         aws ecs register-task-definition --cli-input-json file://.github/workflows/task_definition.json
    
     - name: Update ECS service
