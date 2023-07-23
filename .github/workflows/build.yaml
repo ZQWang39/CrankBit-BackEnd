@@ -151,6 +151,7 @@ jobs:
       env: 
         task_definition_file : task_definition_${{ github.ref_name }}.json
         GITHUB_SHA: ${{ github.sha }}
+        TARGET_ENV: ${{ github.ref_name }}
       run: |
         chmod +x .github/workflows/update_task_definition.sh
         ./.github/workflows/update_task_definition.sh
