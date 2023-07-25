@@ -12,7 +12,16 @@
         "essential": true,
         "environment": [],
         "mountPoints": [],
-        "volumesFrom": []
+        "volumesFrom": [],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-create-group": "true",
+                "awslogs-group": "/ecs/awslogs/Crankbit-cluster-main",
+                "awslogs-region": "ap-southeast-2",
+                "awslogs-stream-prefix": "ecs"
+            }
+        }
     }],
     "family": "crankbit_backend_task_main",
     "executionRoleArn": "arn:aws:iam::349498089405:role/ecs-task-execution-role-main",
