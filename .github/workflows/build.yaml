@@ -111,7 +111,12 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
     
-    
+    - name: Install kubectl command line
+      uses: azure/setup-kubectl@v3
+      with:
+        version: 'v1.26.0'
+        id: install
+
     - name: Build docker image
       env: 
         MONGO_URI: ${{ secrets.MONGO_URI }}
@@ -168,3 +173,10 @@ jobs:
         --service $SERVICE_NAME \
         --task-definition $TASK_DEFINITION \
         --force-new-deployment
+
+    - name: Update kube config
+      run: aws eks update-kubeconfig --name Crankbit-cluster-${{ github.ref_name }}
+    
+    - name: Deploy to EKS
+      run: |
+        kubectl apply -f deployment.yaml
