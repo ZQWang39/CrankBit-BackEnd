@@ -180,4 +180,5 @@ jobs:
     
     - name: Deploy to EKS
       run: |
+        cat ./.github/workflows/crankbit-deployment.yaml
         kubectl apply -f  ./.github/workflows/crankbit-deployment.yaml
