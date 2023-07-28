@@ -179,6 +179,7 @@ jobs:
     
     - name: Deploy to EKS
       run: |
-        sed -i "s/latest/${{ github.sha }}/g" crankbit-deployment.yaml
+        chmod +x ./.github/workflows/crankbit-deployment.yaml
+        sed -i "s/latest/${{ github.sha }}/g" ./.github/workflows/crankbit-deployment.yaml
         cat ./.github/workflows/crankbit-deployment.yaml
-        kubectl apply -f  ./.github/workflows/crankbit-deployment.yaml -image 349498089405.dkr.ecr.ap-southeast-2.amazonaws.com/crankbit-backend-main:${{ github.sha }}
+        kubectl apply -f  ./.github/workflows/crankbit-deployment.yaml
