@@ -20,7 +20,7 @@ spec:
         app.kubernetes.io/name: crankbit-backend-main
     spec:
       containers:
-      - image: 349498089405.dkr.ecr.ap-southeast-2.amazonaws.com/crankbit-backend-main:${{ env.IMAGE_VERSION }}
+      - image: 349498089405.dkr.ecr.ap-southeast-2.amazonaws.com/crankbit-backend-main:latest
         imagePullPolicy: Always
         name: crankbit-backend-main
         ports:
